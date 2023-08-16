@@ -1,0 +1,21 @@
+import { Button } from "@/components/ui/button";
+import { Menu } from "lucide-react";
+
+import { UserButton } from "@clerk/nextjs";
+
+const navBar = () => {
+    return (
+        <div className="flex items-center p-4">
+            <Button variant="ghost" size="icon" className="md:hidden" >
+                <Menu  />
+            </Button>
+
+            {/* Logged In Button */}
+            <div className="flex w-full justify-end">
+                <UserButton afterSignOutUrl="/"/>
+            </div>
+        </div>
+    );
+}
+
+export default navBar;

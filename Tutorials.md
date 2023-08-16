@@ -1,5 +1,12 @@
 This repo is created based on tutorial https://youtu.be/ffJ38dBzrlY
 
+Original Repo:
+https://github.com/AntonioErdeljac/next13-ai-saas
+
+Use icons from here
+https://lucide.dev/icons/
+
+
 ## Setup
 
 Ref: https://ui.shadcn.com/docs/installation/next 
