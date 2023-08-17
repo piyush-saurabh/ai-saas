@@ -41,6 +41,11 @@ npx shadcn-ui@latest add button
 npx shadcn-ui@latest add sheet
 ```
 
+**Card** (for dashboard)
+```
+npx shadcn-ui@latest add card
+```
+
 ## Notes
 
 * Shadcn UI is a CSS framework. All the components (e.g. button) installed using shadcn will be stored in /components folder.
@@ -110,7 +115,7 @@ By default all the routes will be protected. We have to explicitly add public ro
 
 
 
-start: 01:55
+
 
 
 
