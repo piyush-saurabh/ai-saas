@@ -36,6 +36,11 @@ npm run dev
 npx shadcn-ui@latest add button
 ```
 
+**Sheet** (Menu for small/mobile screen)
+```
+npx shadcn-ui@latest add sheet
+```
+
 ## Notes
 
 * Shadcn UI is a CSS framework. All the components (e.g. button) installed using shadcn will be stored in /components folder.
@@ -105,7 +110,7 @@ By default all the routes will be protected. We have to explicitly add public ro
 
 
 
-
+start: 01:55
 
 
 
