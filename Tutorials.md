@@ -22,6 +22,15 @@ npx create-next-app@latest ai-saas --typescript --tailwind --eslint
 npx shadcn-ui@latest init
 ```
 
+**Packages**
+```
+# OpenAI
+npm i openai
+
+# Axios (for sending HTTP request from frontend)
+npm i axios
+```
+
 **Run the project**
 
 ```
@@ -44,6 +53,16 @@ npx shadcn-ui@latest add sheet
 **Card** (for dashboard)
 ```
 npx shadcn-ui@latest add card
+```
+
+**Form** (for conversation)
+```
+npx shadcn-ui@latest add form
+```
+
+**Input** (for form)
+```
+npx shadcn-ui@latest add input
 ```
 
 ## Notes
@@ -115,7 +134,7 @@ By default all the routes will be protected. We have to explicitly add public ro
 
 
 
-
+start: 1:20:05
 
 
 
