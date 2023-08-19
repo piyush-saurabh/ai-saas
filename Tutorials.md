@@ -44,6 +44,9 @@ npm i -D prisma
 
 # Prisma Client
 npm i @prisma/client
+
+# Zustand (for showing the model to upgrade the plan)
+npm i zustand
 ```
 
 **Run the project**
@@ -93,6 +96,16 @@ npx shadcn-ui@latest add select
 **Progress** (for showing the limit in free tier)
 ```
 npx shadcn-ui@latest add progress
+```
+
+**Dialog** (for the upgrade modal)
+```
+npx shadcn-ui@latest add dialog
+```
+
+**Badge** (for the upgrade modal)
+```
+npx shadcn-ui@latest add badge
 ```
 
 ## Notes

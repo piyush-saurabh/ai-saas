@@ -19,10 +19,15 @@ import { useState } from "react";
 import { Empty } from "@/components/empty";
 import { Loader } from "@/components/loader";
 import { cn } from "@/lib/utils";
+import { useProModal } from "@/hooks/use-pro-modal";
 
 
 const MusicPage = () => {
     const router = useRouter();
+
+    // Pro modal from react hook global state
+    const proModal = useProModal();
+
 
     // Contains the response message
     const [music, setMusic] = useState<string>()
@@ -51,8 +56,11 @@ const MusicPage = () => {
             form.reset();
 
         } catch(error: any){
-            // TODO: Open Pro Modal
-            console.log(error);
+            // Check if the error is 403 (free trial expired)
+            if(error?.response.status === 403){
+                // Open the Pro Modal
+                proModal.onOpen();
+            }
         } finally{
             // Refresh server side component
             router.refresh();

@@ -23,9 +23,13 @@ import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@
 import { amountOptions, formSchema, resolutionOptions } from "./constants";
 import { Card, CardFooter } from "@/components/ui/card";
 import Image from "next/image";
+import { useProModal } from "@/hooks/use-pro-modal";
 
 const ImagePage = () => {
     const router = useRouter();
+
+    // Pro modal from react hook global state
+    const proModal = useProModal();
 
     // Images which are received from openAI
     const [images, setImages] = useState<string[]>([]);
@@ -63,8 +67,11 @@ const ImagePage = () => {
             form.reset();
 
         } catch(error: any){
-            // TODO: Open Pro Modal
-            console.log(error);
+            // Check if the error is 403 (free trial expired)
+            if(error?.response.status === 403){
+                // Open the Pro Modal
+                proModal.onOpen();
+            }
         } finally{
             // Refresh server side component
             router.refresh();

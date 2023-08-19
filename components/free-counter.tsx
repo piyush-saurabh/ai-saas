@@ -8,6 +8,7 @@ import { Progress } from "@/components/ui/progress";
 import { Button } from "@/components/ui/button";
 
 import { MAX_FREE_COUNTS } from "@/constants";
+import { useProModal } from "@/hooks/use-pro-modal";
 
 
 
@@ -19,6 +20,9 @@ interface FreeCounterProps {
 export const FreeCounter = ({
     apiLimitCount = 0
 }: FreeCounterProps) => {
+    // Get global state from hook
+    const proModal = useProModal();
+
     // Prevent hydration error (not rendered on the server)
     const [mounted, setMounted] = useState(false);
 
@@ -41,7 +45,7 @@ export const FreeCounter = ({
                         <Progress className="h-3" value={(apiLimitCount / MAX_FREE_COUNTS) * 100} />
                     </div>
 
-                    <Button className="w-full" variant="premium">
+                    <Button onClick={proModal.onOpen} className="w-full" variant="premium">
                         Upgrade
 
                         {/* Icon */}
