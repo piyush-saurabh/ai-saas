@@ -16,10 +16,17 @@ import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
 import { useRouter } from "next/navigation";
 import { useState } from "react";
+import { Empty } from "@/components/empty";
+import { Loader } from "@/components/loader";
+import { cn } from "@/lib/utils";
+import { UserAvatar } from "@/components/user-avatar";
+import { BotAvatar } from "@/components/bot-avatar";
 
 
 const ConversationPage = () => {
     const router = useRouter();
+
+    // Contains the response message
     const [messages, setMessages] = useState<OpenAI.Chat.Completions.ChatCompletionMessage[]>([])
 
     // Functions which form will need
@@ -92,10 +99,32 @@ const ConversationPage = () => {
 
                 {/* Response */}
                 <div className="space-y-4 mt-4">
+
+                    {/* If form is loading, display the loading container */}
+                    {isLoading && (
+                        <div className="flex items-center justify-center p-8 rounded-lg w-full bg-muted">
+                            <Loader />
+                        </div>
+                    )}
+
+                    {/* Display the empty container if there is no message */}
+                    {messages.length === 0 && !isLoading && (
+                        <Empty label="No conversation started"/>
+                    )}
+
+                    {/* Response Message */}
                     <div className="flex flex-col-reverse gap-y-4">
                         {messages.map((message) => (
-                            <div key={message.content}>
-                                {message.content}
+                            <div key={message.content} className={cn("flex items-start w-full p-8 gap-x-8 rounded-lg", message.role === "user" ? "bg-white border border-black/10" : "bg-muted")}>
+
+                                {/* Decide which avatar to show (user or bot) */}
+                                {message.role === "user" ? <UserAvatar /> : <BotAvatar /> }
+
+                                {/* Actual response from OpenAI */}
+                                <p className="text-sm" >
+                                    {message.content}
+                                </p>
+                                
                             </div>
 
                         ))}

@@ -65,6 +65,11 @@ npx shadcn-ui@latest add form
 npx shadcn-ui@latest add input
 ```
 
+**Avatar** (for user in conversation)
+```
+npx shadcn-ui@latest add avatar
+```
+
 ## Notes
 
 * Shadcn UI is a CSS framework. All the components (e.g. button) installed using shadcn will be stored in /components folder.
