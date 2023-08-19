@@ -29,6 +29,9 @@ npm i openai
 
 # Axios (for sending HTTP request from frontend)
 npm i axios
+
+# react-markdown (for displaying the markdown content, e.g code output) 
+npm i react-markdown
 ```
 
 **Run the project**
