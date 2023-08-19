@@ -6,6 +6,9 @@ https://github.com/AntonioErdeljac/next13-ai-saas
 Use icons from here
 https://lucide.dev/icons/
 
+Install Prisma Extension for vscode
+https://marketplace.visualstudio.com/items?itemName=Prisma.prisma
+
 
 ## Setup
 
@@ -35,6 +38,12 @@ npm i react-markdown
 
 # Replicate (for music generation)
 npm i replicate
+
+# Prisma (for tracking free tier limit)
+npm i -D prisma
+
+# Prisma Client
+npm i @prisma/client
 ```
 
 **Run the project**
@@ -149,8 +158,89 @@ Clerk nees to have the folder `sign-in/[[...sign-in]]` and `sign-up/[[...sign-up
 By default all the routes will be protected. We have to explicitly add public route in `middleware.ts` file
 
 
+## Database Setup
 
-start: 1:20:05
+Initialize Prisma. It will create a new folder `prisma`
+```
+npx prisma init
+```
+
+**Setup Planetscale** (serverless MSQL database)
+Go to https://planetscale.com/ > Create new database > Generate new password > Copy the connection string to .env > Copy the schema to /prisma/schema.prisma
+
+Model for our table will be created in schema.prisma
+
+**Model defination**
+```
+model userApiLimit {
+  id String @id @default(cuid())
+  userId String @unique
+  count Int @default(0)
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+}
+```
+
+Push the model to the database and add the models to the node modules (generate). This has to be done everytime we modify the model
+```
+# This will create a table
+npx prisma db push
+
+# This will add the models in node modules so that we can use them during development
+npx prisma generate
+```
+
+View the data (http://localhost:5555/)
+```
+npx prisma studio
+```
+
+### Quering using prisma
+
+**Create a prisma client**
+File: lib/prismadb.ts
+```
+import { PrismaClient } from "@prisma/client";
+
+declare global {
+    var prisma: PrismaClient | undefined;
+}
+
+// Prevent multiple prisma client from getting created
+const prismadb = globalThis.prisma || new PrismaClient();
+if (process.env.NODE_ENV !== "production") globalThis.prisma = prismadb;
+
+export default prismadb;
+```
+
+**Check if row exists (READ)**
+```
+// here 'userId' is a column
+await prismadb.modelName.findUnique({
+        where: {
+            userId: userId
+        }
+    });
+```
+
+**Create a new record (CREATE)**
+```
+// here 'userId' and 'count' are columns of a table
+// Note: Create does not require to provide values for all the columns. Other columns will be null
+await prismadb.modelName.create({
+            data: {userId: userId, count: 1}
+        });
+```
+
+**Update an existing record (UPDATE)**
+```
+// here 'count' is a column
+await prismadb.modelName.update({
+            where: {userId: userId},
+            data: { count: userApiLimit.count + 1 }
+        });
+```
+
 
 
 
