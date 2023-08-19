@@ -32,6 +32,9 @@ npm i axios
 
 # react-markdown (for displaying the markdown content, e.g code output) 
 npm i react-markdown
+
+# Replicate (for music generation)
+npm i replicate
 ```
 
 **Run the project**
