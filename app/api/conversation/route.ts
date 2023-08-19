@@ -1,9 +1,11 @@
 import { auth } from "@clerk/nextjs";
 import { NextResponse } from "next/server";
 
+import { increaseApiLimit, checkApiLimit } from "@/lib/api-limits";
+
 import OpenAI from 'openai';
 
-//const { Configuration, OpenAIApi } = require("openai");
+
 
 const openai = new OpenAI({
     apiKey: process.env.OPENAI_API_KEY, // defaults to process.env["OPENAI_API_KEY"]
@@ -29,6 +31,13 @@ export async function POST(
             return new NextResponse("Messages are required", {status: 400});
         }
 
+        // Check if we are on free trial
+        const freeTrial = await checkApiLimit();
+
+        if(!freeTrial){
+            return new NextResponse("Free trial has expired.", {status: 403});
+        }
+
         // old
         // const response = await openai.chat({
         //     model: "gpt-3.5-turbo",
@@ -41,6 +50,9 @@ export async function POST(
             model: "gpt-3.5-turbo",
             messages,
         });
+
+        // After processing the API request, increase the access count by 1
+        await increaseApiLimit();
 
         return NextResponse.json(response.choices[0].message);
 

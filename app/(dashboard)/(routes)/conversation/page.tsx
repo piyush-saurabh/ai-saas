@@ -63,7 +63,8 @@ const ConversationPage = () => {
             // TODO: Open Pro Modal
             console.log(error);
         } finally{
-            // Refresh server side component
+            // Refresh "ALL" the server side component
+            // This is essential to update the progress bar
             router.refresh();
         }
     };

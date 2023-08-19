@@ -58,3 +58,25 @@ export const checkApiLimit = async () => {
         return false;
     }
 }
+
+// Get the number of API counts available
+// We have to run this function on the server
+export const getApiLimitCount = async () => {
+    const { userId } = auth();
+
+    if(!userId){
+        return 0
+    }
+
+    const userApiLimit = await prismadb.userApiLimit.findUnique({
+        where: {
+            userId: userId
+        }
+    });
+
+    if(!userApiLimit){
+        return 0;
+    }
+
+    return userApiLimit.count;
+}

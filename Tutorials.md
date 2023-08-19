@@ -90,6 +90,11 @@ npx shadcn-ui@latest add avatar
 npx shadcn-ui@latest add select
 ```
 
+**Progress** (for showing the limit in free tier)
+```
+npx shadcn-ui@latest add progress
+```
+
 ## Notes
 
 * Shadcn UI is a CSS framework. All the components (e.g. button) installed using shadcn will be stored in /components folder.
@@ -240,9 +245,6 @@ await prismadb.modelName.update({
             data: { count: userApiLimit.count + 1 }
         });
 ```
-
-
-
 
 
 
