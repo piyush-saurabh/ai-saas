@@ -56,6 +56,10 @@ npm i react-hot-toast
 
 # Crisp (for integrating chat support on the website)
 npm i crisp-sdk-web
+
+# For getting type writter effect on landing page
+npm i typewriter-effect
+
 ```
 
 **Run the project**
@@ -130,7 +134,7 @@ npx shadcn-ui@latest add badge
     * /app/(dashboard)/(routes)/ contains the client component
 * /components will have components from shadcn
 * /lib/utils.ts will be used to merge tailwind classes
-* 
+* /public: contains all the public assets on the websites like logo. They are accessed from the website using `/image.png`
 
 ## Routing
 * /app/page.tsx will be the default route /
@@ -344,6 +348,12 @@ Create an account on: https://crisp.chat/en/
 Copy the CRISP_WEBSITE_ID
 ```
 <script type="text/javascript">window.$crisp=[];window.CRISP_WEBSITE_ID="6bbc993d-4fee-46fb-bbff-1f65ea3978b6";(function(){d=document;s=d.createElement("script");s.src="https://client.crisp.chat/l.js";s.async=1;d.getElementsByTagName("head")[0].appendChild(s);})();</script>
+```
+
+## App Deployment
+Go to `package.json` and add a post install script
+```
+"postinstall": "prisma generate"
 ```
 
 
