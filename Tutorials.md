@@ -356,5 +356,20 @@ Go to `package.json` and add a post install script
 "postinstall": "prisma generate"
 ```
 
+Check for errors in the project
+```
+npm run lint
+```
+
+Follow the below steps to prepare for deployment:
+* Create an account on vercel for deployment: https://vercel.com/
+* Commit the code in github.
+* Import the github repository to create the new vercel project.
+* Add all the environment variables from local `.env` file. Copy all the content from `.env` and paste it in vercel.
+* Click `Deploy`
+
+
+
+
 
 
