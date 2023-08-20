@@ -368,6 +368,15 @@ Follow the below steps to prepare for deployment:
 * Add all the environment variables from local `.env` file. Copy all the content from `.env` and paste it in vercel.
 * Click `Deploy`
 
+After deployment, make below changes:
+* Go to stripe and change the webhook: https://vercel-endpoint/api/webhook
+* Add the events which we are listening in our webhook:
+    * checkout.session.completed
+    * invoice.payment_succeeded
+* Go to vercel dashboard > project > settings > Environment Variable and paste the *webhook signing secret* obtained from Stripe
+* Change the NEXT_PUBLIC_APP_URL to vercel endpoint
+* Go to deployment and "Redeploy" the project.
+
 
 
 
