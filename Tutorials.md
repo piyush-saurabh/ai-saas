@@ -47,6 +47,9 @@ npm i @prisma/client
 
 # Zustand (for showing the model to upgrade the plan)
 npm i zustand
+
+# Stripe (for payments)
+npm i stripe
 ```
 
 **Run the project**
@@ -241,6 +244,21 @@ await prismadb.modelName.findUnique({
     });
 ```
 
+**Read a row and get selective (select) columns**
+```
+await prismadb.userSubscription.findUnique({
+        where: {
+            userId: userId
+        },
+        select:{
+            stripeSubscriptionId: true,
+            stripeCurrentPeriodEnd: true,
+            stripeCustomerId: true,
+            stripePriceId: true,
+        },
+    });
+```
+
 **Create a new record (CREATE)**
 ```
 // here 'userId' and 'count' are columns of a table
@@ -258,6 +276,51 @@ await prismadb.modelName.update({
             data: { count: userApiLimit.count + 1 }
         });
 ```
+
+## Payment Integration
+Login to stripe dashboard: 
+https://dashboard.stripe.com/dashboard
+
+Copy the **Secret Key** from .env and set it to STRIPE_API_KEY 
+
+For local development, download stripe CLI from: https://stripe.com/docs/stripe-cli
+
+Setup for Ubuntu
+```
+# Add Stripe CLI’s GPG key to the apt sources keyring
+curl -s https://packages.stripe.dev/api/security/keypair/stripe-cli-gpg/public | gpg --dearmor | sudo tee /usr/share/keyrings/stripe.gpg
+
+# Add CLI’s apt repository to the apt sources list
+echo "deb [signed-by=/usr/share/keyrings/stripe.gpg] https://packages.stripe.dev/stripe-cli-debian-local stable main" | sudo tee -a /etc/apt/sources.list.d/stripe.list
+
+# Update package list
+sudo apt update
+
+# Install stripe CLI
+sudo apt install stripe
+```
+
+**Login to Stripe using stripe CLI**
+```
+stripe login
+```
+
+**Send the stripe payment info to the local webhook**
+```
+stripe listen --forward-to localhost:3000/api/webhook
+
+# If the above command get stuck at  "Getting ready...", run in debug mode
+# stripe listen --forward-to localhost:3000/api/webhook --log-level=debug
+# On ubuntu, change the /etc/resolv.conf and point the nameserver to 8.8.8.8
+# Ref: https://github.com/stripe/stripe-cli/issues/461
+```
+Copy the 'webhook signing secret' received after running the above command to environment variable STRIPE_WEBHOOK_SECRET in .env
+
+Test data: https://stripe.com/docs/testing
+Card Number: 4242 4242 4242 4242
+Date: 12/34
+CVV: any
+
 
 
 
