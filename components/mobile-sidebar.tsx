@@ -11,10 +11,12 @@ import { useEffect, useState } from "react";
 // Interface for API count
 interface MobileSidebarProps {
     apiLimitCount: number;
+    isPro: boolean;
 }
 
 const MobileSidebar = ({
-    apiLimitCount = 0
+    apiLimitCount = 0,
+    isPro = false,
 }: MobileSidebarProps) => {
     
     // Fixing Hydration Error
@@ -39,7 +41,7 @@ const MobileSidebar = ({
             </SheetTrigger>
 
             <SheetContent side="left" className="p-0">
-                <Sidebar apiLimitCount={apiLimitCount} />
+                <Sidebar isPro={isPro} apiLimitCount={apiLimitCount} />
             </SheetContent>
             
         </Sheet>

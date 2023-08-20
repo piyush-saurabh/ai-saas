@@ -4,46 +4,51 @@ import { NextResponse } from "next/server";
 import OpenAI from 'openai';
 
 import { increaseApiLimit, checkApiLimit } from "@/lib/api-limits";
+import { checkSubscription } from "@/lib/subscription";
 
 const openai = new OpenAI({
     apiKey: process.env.OPENAI_API_KEY, // defaults to process.env["OPENAI_API_KEY"]
-  });
+});
 
 // Handler for API
 export async function POST(
     req: Request
 ) {
-    try{
+    try {
         // Check if we are authenticated
         const { userId } = auth();
         const body = await req.json();
 
         // body of the request which we will receive from frontend
         // E.g. {"prompt": "something", "amount": "1", "resolution": "512x512"}
-        const { prompt, amount = "1", resolution = "512x512"} = body;
+        const { prompt, amount = "1", resolution = "512x512" } = body;
 
         // If request is unauthenticated
-        if(!userId) {
-            return new NextResponse("Unauthorized", {status: 401});
+        if (!userId) {
+            return new NextResponse("Unauthorized", { status: 401 });
         }
 
         // Validation on input fields
-        if(!prompt){
-            return new NextResponse("Prompt is required", {status: 400});
+        if (!prompt) {
+            return new NextResponse("Prompt is required", { status: 400 });
         }
 
-        if(!amount){
-            return new NextResponse("Number of images are required", {status: 400});
+        if (!amount) {
+            return new NextResponse("Number of images are required", { status: 400 });
         }
 
-        if(!resolution){
-            return new NextResponse("Resolution of the image is required", {status: 400});
+        if (!resolution) {
+            return new NextResponse("Resolution of the image is required", { status: 400 });
         }
 
         // Check if we are on free trial
         const freeTrial = await checkApiLimit();
-        if(!freeTrial){
-            return new NextResponse("Free trial has expired.", {status: 403});
+
+        // Check if we have have a paid subscription
+        const isPro = await checkSubscription();
+
+        if (!freeTrial && !isPro) {
+            return new NextResponse("Free trial has expired.", { status: 403 });
         }
 
         // Invoke OpenAI to generate image
@@ -54,13 +59,15 @@ export async function POST(
         });
 
         // After processing the API request, increase the access count by 1
-        await increaseApiLimit();
+        if (!isPro) {
+            await increaseApiLimit();
+        }
 
         return NextResponse.json(response.data);
 
 
-    } catch (error){
+    } catch (error) {
         console.log("[IMAGE_ERROR]", error);
-        return new NextResponse("Internal error", {status: 500});
+        return new NextResponse("Internal error", { status: 500 });
     }
 }

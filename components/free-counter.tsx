@@ -15,10 +15,12 @@ import { useProModal } from "@/hooks/use-pro-modal";
 
 interface FreeCounterProps {
     apiLimitCount: number;
+    isPro: boolean;
 }
 
 export const FreeCounter = ({
-    apiLimitCount = 0
+    apiLimitCount = 0,
+    isPro = false,
 }: FreeCounterProps) => {
     // Get global state from hook
     const proModal = useProModal();
@@ -31,6 +33,11 @@ export const FreeCounter = ({
     }, []);
 
     if(!mounted) {
+        return null;
+    }
+
+    // If it is pro user, don't show the free counter card
+    if(isPro) {
         return null;
     }
 

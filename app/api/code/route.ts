@@ -2,6 +2,7 @@ import { auth } from "@clerk/nextjs";
 import { NextResponse } from "next/server";
 
 import { increaseApiLimit, checkApiLimit } from "@/lib/api-limits";
+import { checkSubscription } from "@/lib/subscription";
 
 import OpenAI from 'openai';
 
@@ -38,8 +39,12 @@ export async function POST(
 
         // Check if we are on free trial
         const freeTrial = await checkApiLimit();
-        if(!freeTrial){
-            return new NextResponse("Free trial has expired.", {status: 403});
+
+        // Check if we have have a paid subscription
+        const isPro = await checkSubscription();
+
+        if (!freeTrial && !isPro) {
+            return new NextResponse("Free trial has expired.", { status: 403 });
         }
 
         const response = await openai.chat.completions.create({
@@ -48,7 +53,9 @@ export async function POST(
         });
 
         // After processing the API request, increase the access count by 1
-        await increaseApiLimit();
+        if (!isPro) {
+            await increaseApiLimit();
+        }
 
         return NextResponse.json(response.choices[0].message);
 
