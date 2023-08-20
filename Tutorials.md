@@ -53,6 +53,9 @@ npm i stripe
 
 # For error message display
 npm i react-hot-toast
+
+# Crisp (for integrating chat support on the website)
+npm i crisp-sdk-web
 ```
 
 **Run the project**
@@ -335,6 +338,13 @@ Card Number: 4242 4242 4242 4242
 Date: 12/34
 CVV: any
 
+## Customer support integration
+Create an account on: https://crisp.chat/en/
+
+Copy the CRISP_WEBSITE_ID
+```
+<script type="text/javascript">window.$crisp=[];window.CRISP_WEBSITE_ID="6bbc993d-4fee-46fb-bbff-1f65ea3978b6";(function(){d=document;s=d.createElement("script");s.src="https://client.crisp.chat/l.js";s.async=1;d.getElementsByTagName("head")[0].appendChild(s);})();</script>
+```
 
 
 
