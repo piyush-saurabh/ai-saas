@@ -24,6 +24,7 @@ import { amountOptions, formSchema, resolutionOptions } from "./constants";
 import { Card, CardFooter } from "@/components/ui/card";
 import Image from "next/image";
 import { useProModal } from "@/hooks/use-pro-modal";
+import { toast } from "react-hot-toast";
 
 const ImagePage = () => {
     const router = useRouter();
@@ -68,9 +69,11 @@ const ImagePage = () => {
 
         } catch(error: any){
             // Check if the error is 403 (free trial expired)
-            if(error?.response.status === 403){
+            if(error?.response?.status === 403){
                 // Open the Pro Modal
                 proModal.onOpen();
+            }else {
+                toast.error("Something went wrong");
             }
         } finally{
             // Refresh server side component

@@ -22,6 +22,7 @@ import { cn } from "@/lib/utils";
 import { UserAvatar } from "@/components/user-avatar";
 import { BotAvatar } from "@/components/bot-avatar";
 import { useProModal } from "@/hooks/use-pro-modal";
+import { toast } from "react-hot-toast";
 
 
 const ConversationPage = () => {
@@ -48,6 +49,11 @@ const ConversationPage = () => {
     const onSubmit = async (values: z.infer<typeof formSchema>) => {
         console.log(values);
         try{
+
+            // Test for error
+            //throw new Error("testing toast error");
+
+
             const userMessage: OpenAI.Chat.Completions.ChatCompletionMessage = {
                 role: "user",
                 content: values.prompt,
@@ -65,9 +71,11 @@ const ConversationPage = () => {
 
         } catch(error: any){
             // Check if the error is 403 (free trial expired)
-            if(error?.response.status === 403){
+            if(error?.response?.status === 403){
                 // Open the Pro Modal
                 proModal.onOpen();
+            } else {
+                toast.error("Something went wrong");
             }
 
             //console.log(error);

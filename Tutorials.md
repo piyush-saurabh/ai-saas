@@ -50,6 +50,9 @@ npm i zustand
 
 # Stripe (for payments)
 npm i stripe
+
+# For error message display
+npm i react-hot-toast
 ```
 
 **Run the project**
